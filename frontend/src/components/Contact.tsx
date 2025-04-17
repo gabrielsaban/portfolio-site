@@ -49,7 +49,7 @@ export default function Contact() {
       } else {
         throw new Error('Failed to submit form');
       }
-    } catch (error) {
+    } catch {
       setFormStatus({ 
         isSubmitting: false, 
         isSubmitted: false, 
@@ -66,7 +66,7 @@ export default function Contact() {
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Get in Touch</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
               Have a project in mind or want to discuss how I can help with your automation needs? 
-              Send me a message and I'll get back to you soon.
+              Send me a message and I&apos;ll get back to you soon.
             </p>
           </div>
           
@@ -80,7 +80,7 @@ export default function Contact() {
                 </div>
                 <div className="ml-3">
                   <p className="text-sm text-green-800 dark:text-green-200">
-                    Thank you for your message! I'll get back to you as soon as possible.
+                    Thank you for your message! I&apos;ll get back to you as soon as possible.
                   </p>
                 </div>
               </div>

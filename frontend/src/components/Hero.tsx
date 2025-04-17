@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 
 export default function Hero() {
   return (
@@ -15,7 +14,7 @@ export default function Hero() {
             Python Automation + Full-Stack Dev
           </h2>
           <p className="text-lg text-gray-300 max-w-xl">
-            Transforming ideas into powerful automation solutions and beautiful web applications. Let's build something amazing together.
+            Transforming ideas into powerful automation solutions and beautiful web applications. Let&apos;s build something amazing together.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
             <a 
