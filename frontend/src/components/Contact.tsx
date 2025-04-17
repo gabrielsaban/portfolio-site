@@ -37,7 +37,10 @@ export default function Contact() {
     try {
       // Using environment variable for API endpoint
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl}/api/contact`, {
+      // Fix the URL construction to avoid double slashes
+      const url = apiUrl.endsWith('/') ? `${apiUrl}api/contact` : `${apiUrl}/api/contact`;
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
