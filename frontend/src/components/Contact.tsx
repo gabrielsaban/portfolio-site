@@ -32,13 +32,46 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate data before submitting
+    if (formData.name.length < 2) {
+      setFormStatus({ 
+        isSubmitting: false, 
+        isSubmitted: false, 
+        error: 'Name must be at least 2 characters long.'
+      });
+      return;
+    }
+    
+    if (formData.email.length < 5 || !formData.email.includes('@')) {
+      setFormStatus({ 
+        isSubmitting: false, 
+        isSubmitted: false, 
+        error: 'Please enter a valid email address.'
+      });
+      return;
+    }
+    
+    if (formData.message.length < 10) {
+      setFormStatus({ 
+        isSubmitting: false, 
+        isSubmitted: false, 
+        error: 'Message must be at least 10 characters long.'
+      });
+      return;
+    }
+    
     setFormStatus({ isSubmitting: true, isSubmitted: false, error: null });
     
+    // First try our custom backend
     try {
       // Using environment variable for API endpoint
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       // Fix the URL construction to avoid double slashes
       const url = apiUrl.endsWith('/') ? `${apiUrl}api/contact` : `${apiUrl}/api/contact`;
+      
+      console.log('Submitting form data:', formData);
+      console.log('To URL:', url);
       
       const response = await fetch(url, {
         method: 'POST',
@@ -51,10 +84,55 @@ export default function Contact() {
       if (response.ok) {
         setFormStatus({ isSubmitting: false, isSubmitted: true, error: null });
         setFormData({ name: '', email: '', message: '' });
+        return; // Success with our backend
       } else {
-        throw new Error('Failed to submit form');
+        // Try to get more detailed error information
+        let errorMessage = 'Failed to submit form';
+        try {
+          const errorData = await response.json();
+          console.error('API error response:', errorData);
+          if (errorData.detail) {
+            if (typeof errorData.detail === 'string') {
+              errorMessage = errorData.detail;
+            } else if (Array.isArray(errorData.detail)) {
+              errorMessage = errorData.detail.map((err: {loc: string[], msg: string}) => `${err.loc.join('.')}: ${err.msg}`).join(', ');
+            }
+          }
+        } catch (e) {
+          console.error('Error parsing error response:', e);
+        }
+        
+        console.error('Trying fallback to Formspree...');
+        // Fall through to Formspree
       }
-    } catch {
+    } catch (error) {
+      console.error('Form submission error with custom backend:', error);
+      console.error('Trying fallback to Formspree...');
+      // Fall through to Formspree
+    }
+    
+    // Fallback to Formspree if our backend fails
+    try {
+      // Replace with your Formspree form ID when you sign up
+      const formspreeUrl = 'https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID';
+      
+      const formspreeResponse = await fetch(formspreeUrl, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      if (formspreeResponse.ok) {
+        setFormStatus({ isSubmitting: false, isSubmitted: true, error: null });
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        throw new Error('Failed to submit form through backup service');
+      }
+    } catch (error) {
+      console.error('Form submission error with Formspree:', error);
       setFormStatus({ 
         isSubmitting: false, 
         isSubmitted: false, 
