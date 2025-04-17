@@ -57,6 +57,9 @@ cd frontend
 # Install dependencies
 npm install
 
+# Create .env.local file
+cp .env.example .env.local
+
 # Run development server
 npm run dev
 ```
@@ -76,11 +79,28 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
+# Create .env file from example
+cp .env.example .env
+# Edit .env file to add your email credentials
+
 # Run development server
 uvicorn app.main:app --reload --port 8000
 ```
 
 The backend API will be available at http://localhost:8000.
+
+### Setting Up Email for Contact Form
+
+The contact form can send emails through a standard SMTP server (Gmail, etc.):
+
+1. Create a `.env` file in the backend directory using the provided `.env.example`
+2. For Gmail, you'll need to:
+   - Use an [App Password](https://support.google.com/accounts/answer/185833?hl=en) rather than your regular password
+   - Set `EMAIL_HOST_USER` to your Gmail address
+   - Set `EMAIL_HOST_PASSWORD` to your App Password
+3. Update `CONTACT_EMAIL` to the email where you want to receive contact form submissions
+
+If you don't configure email credentials, the contact form will still appear to work for testing purposes (messages will be logged but not sent).
 
 ## Deployment
 
