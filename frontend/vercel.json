@@ -1,13 +1,4 @@
 {
   "buildCommand": "npm run build",
-  "env": {
-    "NEXT_PUBLIC_API_URL": {
-      "description": "The URL of your backend API",
-      "example": "https://your-backend-api.onrender.com"
-    },
-    "NEXT_PUBLIC_FORMSPREE_ID": {
-      "description": "Your Formspree form ID for fallback contact form",
-      "example": "xyzabcdef123"
-    }
-  }
+  "outputDirectory": ".next"
 } 
