@@ -102,6 +102,7 @@ export default function Contact() {
           console.error('Error parsing error response:', e);
         }
         
+        console.error('Backend error:', errorMessage);
         console.error('Trying fallback to Formspree...');
         // Fall through to Formspree
       }
@@ -113,8 +114,15 @@ export default function Contact() {
     
     // Fallback to Formspree if our backend fails
     try {
-      // Replace with your Formspree form ID when you sign up
-      const formspreeUrl = 'https://formspree.io/f/REPLACE_WITH_YOUR_FORM_ID';
+      // IMPORTANT: For Vercel deployment, create an environment variable called
+      // NEXT_PUBLIC_FORMSPREE_ID with your Formspree form ID as the value
+      const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID || 'REPLACE_WITH_YOUR_FORM_ID';
+      const formspreeUrl = `https://formspree.io/f/${formspreeId}`;
+      
+      // Skip Formspree if using placeholder ID in production
+      if (formspreeId === 'REPLACE_WITH_YOUR_FORM_ID' && process.env.NODE_ENV === 'production') {
+        throw new Error('Formspree ID not configured. Please set NEXT_PUBLIC_FORMSPREE_ID environment variable.');
+      }
       
       const formspreeResponse = await fetch(formspreeUrl, {
         method: 'POST',
