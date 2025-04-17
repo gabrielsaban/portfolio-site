@@ -1,75 +1,48 @@
-// Template: Full-Stack Portfolio (React + FastAPI)
-
-// -------------------------------
-// Recommended Repo Directory:
-// -------------------------------
-// /my-portfolio
-// ├── frontend/             → React (Next.js)
-// │   ├── app/              → App Router (Next.js 13+)
-// │   ├── components/       → Reusable UI components
-// │   ├── public/           → Static assets (images, favicon)
-// │   ├── styles/           → Global styles
-// │   └── tailwind.config.js
-// ├── backend/              → FastAPI backend
-// │   ├── app/
-// │   │   ├── main.py       → FastAPI entrypoint
-// │   │   ├── services/     → Custom logic (e.g. scraping, automation)
-// │   │   ├── models/       → Pydantic models
-// │   │   └── utils/        → Helper functions
-// │   └── requirements.txt  → Backend dependencies
-// ├── .gitignore
-// └── README.md
-
-// -------------------------------
-// Example backend/app/main.py:
-// -------------------------------
-
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from app.models.schemas import ContactRequest
+from app.services.contact_service import process_contact_request
+from fastapi.responses import RedirectResponse
 
-app = FastAPI()
+app = FastAPI(
+    title="Gabriel Saban Portfolio API",
+    description="Backend API for Gabriel Saban's portfolio website",
+    version="1.0.0"
+)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Allows all origins
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
+
+@app.get("/")
+def root():
+    """Redirect to API documentation"""
+    return {"message": "Welcome to Gabriel Saban's Portfolio API", "docs": "/docs"}
 
 @app.get("/api/hello")
 def read_root():
-    return {"message": "hello from fastapi"}
+    return {"message": "Hello from Gabriel Saban's portfolio API"}
 
-// -------------------------------
-// Example frontend/app/page.tsx:
-// -------------------------------
-
-'use client'
-
-import { useEffect, useState } from 'react'
-
-export default function Home() {
-  const [msg, setMsg] = useState('loading...')
-
-  useEffect(() => {
-    fetch('http://localhost:8000/api/hello')
-      .then((res) => res.json())
-      .then((data) => setMsg(data.message))
-  }, [])
-
-  return (
-    <main className="flex h-screen items-center justify-center">
-      <h1 className="text-3xl font-bold">{msg}</h1>
-    </main>
-  )
-}
-
-// -------------------------------
-// Run Instructions:
-// -------------------------------
-// Terminal 1: cd backend && uvicorn app.main:app --reload --port 8000
-// Terminal 2: cd frontend && npm run dev
-// (Make sure CORS is configured properly and both are running)
-
-// Tailwind setup and project customizations can be added after scaffold.
+@app.post("/api/contact")
+async def contact(request: ContactRequest):
+    """
+    Handle contact form submissions
+    Processes the contact request and sends appropriate notifications
+    """
+    try:
+        # Process the contact request using the service
+        success = await process_contact_request(request)
+        
+        if not success:
+            raise HTTPException(
+                status_code=500, 
+                detail="There was an issue processing your contact request"
+            )
+            
+        return {"status": "success", "message": "Contact form submitted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) 

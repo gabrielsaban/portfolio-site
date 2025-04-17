@@ -1,65 +1,98 @@
-# 🌐 Gabriel Saban – Personal Portfolio
+# Gabriel Saban Portfolio
 
-This is my personal portfolio website, built with **React**, to showcase my projects, skills, and work as a developer. It includes live demos, GitHub links, and information about my background in coding, automation, and software engineering.
+A modern personal portfolio website showcasing Python automation and full-stack development services, projects, and contact information.
 
-> **Live site:** [gabrielsaban.com](https://gabrielsaban.com)  
-> **Built with:** React, HTML/CSS, JavaScript
+## Features
 
----
+- **Responsive Design**: Mobile-first approach with full responsiveness
+- **Modern UI**: Clean, professional design with Tailwind CSS
+- **Full-Stack**: Next.js frontend with FastAPI backend
+- **Contact Form**: Interactive form that submits to the backend API
+- **Project Showcase**: Highlighted projects with descriptions and tech stack
+- **Services Section**: Clear display of offered services and skills
 
-## 🛠 Features
+## Tech Stack
 
-- Responsive design (mobile/tablet/desktop)
-- Project section with code + live demo links
-- Contact form or direct email integration
-- Easy to update with new projects and info
+### Frontend
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- React Hooks
 
----
+### Backend
+- FastAPI
+- Python 3.10+
+- Pydantic for data validation
 
-## 🚀 Getting Started
+## Project Structure
 
-To run the site locally:
+```
+/portfolio-site
+├── frontend/             → Next.js frontend
+│   ├── src/              → Source code
+│   │   ├── app/          → App Router (Next.js)
+│   │   └── components/   → Reusable UI components
+│   └── public/           → Static assets
+├── backend/              → FastAPI backend
+│   ├── app/
+│   │   ├── main.py       → FastAPI entrypoint
+│   │   └── models/       → Pydantic models (future)
+│   └── requirements.txt  → Python dependencies
+└── README.md
+```
+
+## Installation & Setup
+
+### Prerequisites
+- Node.js 18+ and npm
+- Python 3.10+
+- Git
+
+### Frontend Setup
 
 ```bash
-git clone https://github.com/yourusername/portfolio-site.git
-cd portfolio-site
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
 npm install
-npm start
+
+# Run development server
+npm run dev
 ```
 
-This will start a dev server on `http://localhost:3000`.
+The frontend will be available at http://localhost:3000.
 
----
+### Backend Setup
 
-## 📁 Project Structure
+```bash
+# Navigate to backend directory
+cd backend
 
+# Create a virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run development server
+uvicorn app.main:app --reload --port 8000
 ```
-/public          → static assets
-/src
-  /components    → reusable UI elements
-  /pages         → Home, Projects, Contact, etc.
-  /assets        → images, icons
-  App.js         → main component
-  index.js       → entry point
-```
 
----
+The backend API will be available at http://localhost:8000.
 
-## 🧰 Tech Stack
+## Deployment
 
-- React
-- JavaScript (ES6+)
-- HTML5 & CSS3
-- Deployment via [Netlify](https://netlify.com)
+This site is designed to be deployed to gabrielsaban.com. Recommended deployment options:
 
----
+- Frontend: Vercel, Netlify, or GitHub Pages
+- Backend: Render, Railway, or DigitalOcean
 
-## 📫 Contact
+## License
 
-Reach out via [email](mailto:gabriel.saban@outlook.com) or connect on [LinkedIn](https://linkedin.com/in/yourusername).
+This project is licensed under the MIT License - see the LICENSE file for details.
 
----
+## Contact
 
-## 📝 License
-
-This project is open-source under the [MIT License](LICENSE).
+Gabriel Saban - contact@gabrielsaban.com
